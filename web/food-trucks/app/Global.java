@@ -34,7 +34,7 @@ public class Global extends GlobalSettings{
      */
     public void loadDataFromService(){
         WS.url(controllers.Application.SF_FOOD_TRUCKS_API)
-                .setQueryParameter("$select", controllers.Application.DEFAULT_PROJECTION).get().map(
+                .setQueryParameter("$select", controllers.Application.DEFAULT_PROJECTION).setQueryParameter("status", "APPROVED").get().map(
                         new F.Function<WS.Response, List<FoodTruck>>() {
                             public List<FoodTruck> apply(WS.Response response) {
                                 List<FoodTruck> trucks = null;

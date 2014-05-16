@@ -31,4 +31,9 @@ public class FoodTruck {
      * the location information
      */
     public Location location;
+
+    /**
+     * the address
+     */
+    public String locationdescription;
 }

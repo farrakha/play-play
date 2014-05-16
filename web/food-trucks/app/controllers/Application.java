@@ -27,7 +27,7 @@ public class Application extends Controller {
     private static final ObjectMapper _mapper = new ObjectMapper();
 
     public static final String SF_FOOD_TRUCKS_API = "http://data.sfgov.org/resource/rqzj-sfat.json?";
-    public static final String DEFAULT_PROJECTION = "applicant, fooditems, location";
+    public static final String DEFAULT_PROJECTION = "applicant, fooditems, location, locationdescription";
 
     /*
      * Loads the index page
@@ -58,7 +58,7 @@ public class Application extends Controller {
                 //call the web service asynchronously and return a promise of the result
                 Promise<Result> resultPromise = WS.url(SF_FOOD_TRUCKS_API)
                         .setQueryParameter("$select", DEFAULT_PROJECTION)
-                        .setQueryParameter("$where", query).get().map(
+                        .setQueryParameter("$where", query).setQueryParameter("status", "APPROVED").get().map(
                         new Function<WS.Response, Result>() {
                             public Result apply(WS.Response response) {
                                 if(response.getStatus() == 200){

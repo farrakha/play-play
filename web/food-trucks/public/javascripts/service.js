@@ -84,6 +84,7 @@ angular.module('truckApp', [])
                 title: truck.applicant
             });
             marker.fooditems = truck.fooditems;
+            marker.locationdescription = truck.locationdescription;
             var content = '<div id="infowindow_content" ng-include src="\'/assets/infowindow.scala.html\'"></div>';
             var compiled = $compile(content)($scope);
             google.maps.event.addListener(
@@ -94,6 +95,7 @@ angular.module('truckApp', [])
                         //add the truck details to the scope for the info window and open it
                         scope.title = marker.title;
                         scope.fooditems = marker.fooditems;
+                        scope.locationdescription = marker.locationdescription;
                         scope.$apply();
                         infowindow.setContent(compiled[0]);
                         infowindow.open(scope.map, marker);
