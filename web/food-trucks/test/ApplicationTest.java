@@ -24,12 +24,6 @@ import static play.test.Helpers.*;
 import static org.fest.assertions.Assertions.*;
 
 
-/**
-*
-* Simple (JUnit) tests that can call all parts of a play app.
-* If you are interested in mocking a whole application, see the wiki for more details.
-*
-*/
 public class ApplicationTest {
 
     private static final ObjectMapper _mapper = new ObjectMapper();
@@ -61,4 +55,23 @@ public class ApplicationTest {
         });
     }
 
+    @Test
+    public void callLiveBounds(){
+        running(fakeApplication(), new Runnable() {
+            @Override
+            public void run() {
+                Bounds bounds = new Bounds();
+                bounds.topLeftLatitude = 37.80;
+                bounds.topLeftLongitude = -122.46;
+                bounds.bottomRightLatitude = 37.76;
+                bounds.bottomRightLongitude = -122.40;
+                Result result = callAction(controllers.routes.ref.Application.liveBounds(), new FakeRequest().withJsonBody(Json.toJson(bounds)));
+                assertThat(status(result)).isEqualTo(OK);
+                assertThat(contentType(result)).isEqualTo("application/json");
+                String resultNode = contentAsString(result);
+                System.out.println(resultNode);
+                assertThat(resultNode.length()).isGreaterThan(0);
+            }
+        });
+    }
 }

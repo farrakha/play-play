@@ -29,6 +29,9 @@ public class Global extends GlobalSettings{
     }
 
 
+    /**
+     * Asynchronously loads data from the web service and updates the database
+     */
     public void loadDataFromService(){
         WS.url(controllers.Application.SF_FOOD_TRUCKS_API)
                 .setQueryParameter("$select", controllers.Application.DEFAULT_PROJECTION).get().map(
@@ -52,6 +55,10 @@ public class Global extends GlobalSettings{
                 );
     }
 
+    /**
+     * Updates the database with new trucks data
+     * @param trucks the new list of trucks
+     */
     private void updateDataBase(List<FoodTruck> trucks){
         if(trucks != null && trucks.size() > 0){
             FoodTruck.foodTrucks().remove();

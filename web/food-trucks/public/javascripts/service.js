@@ -1,10 +1,11 @@
 angular.module('truckApp', [])
     .controller('TruckCtrl', function($scope, $http, $compile) {
 
+    var defaultZoomLevel = 18;
     //default options to load if geolocation fails
     var defaultMapOptions = {
         center: new google.maps.LatLng(37.7860099, -122.4025387), //;-)
-        zoom: 18,
+        zoom: defaultZoomLevel,
         panControl: false
     };
 
@@ -34,13 +35,15 @@ angular.module('truckApp', [])
 
             loadTrucks(boundsRequest);
         });
-        if (!navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                $scope.map.setCenter(pos);
-                $scope.map.setZoom(18);
-            },
-                handleNoGeolocation);
+        if (navigator.geolocation) {//is geolocation supported
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    $scope.map.setCenter(pos);
+                    $scope.map.setZoom(defaultZoomLevel);
+                },
+                handleNoGeolocation
+            );
         } else {
             // Browser doesn't support Geolocation
             handleNoGeolocation();
@@ -83,17 +86,22 @@ angular.module('truckApp', [])
             marker.fooditems = truck.fooditems;
             var content = '<div id="infowindow_content" ng-include src="\'/assets/infowindow.scala.html\'"></div>';
             var compiled = $compile(content)($scope);
-            google.maps.event.addListener(marker, 'click', (function(marker, scope, complied){return function() {
-                scope.title = marker.title;
-                scope.fooditems = marker.fooditems;
-                scope.$apply();
-                infowindow.setContent(compiled[0]);
-                infowindow.open(scope.map, marker);
-            };})(marker, $scope, compiled)
+            google.maps.event.addListener(
+                marker
+                , 'click'
+                , (function(marker, scope, compiled){
+                    return function() {
+                        //add the truck details to the scope for the info window and open it
+                        scope.title = marker.title;
+                        scope.fooditems = marker.fooditems;
+                        scope.$apply();
+                        infowindow.setContent(compiled[0]);
+                        infowindow.open(scope.map, marker);
+                    };
+                 })(marker, $scope, compiled)
             );
             $scope.markers.push(marker);
         }
-
     }
 
     /* Geocodes an address and loads into the map

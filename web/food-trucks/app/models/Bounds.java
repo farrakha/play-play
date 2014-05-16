@@ -1,8 +1,7 @@
 package models;
 
-/*
+/**
  * A simple object for passing around a map bounding box
- *
  */
 public class Bounds {
     public double topLeftLatitude;

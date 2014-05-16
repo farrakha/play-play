@@ -6,8 +6,6 @@ import org.jongo.marshall.jackson.oid.ObjectId;
 import uk.co.panaxiom.playjongo.PlayJongo;
 
 /**
- * Created by afarrakha on 2014-05-10.
- *
  * A class representing the FoodTruck entities and collection
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -19,9 +17,18 @@ public class FoodTruck {
     @ObjectId
     private String _id;
 
+    /**
+     * the name of the food truck
+     */
     public String applicant;
 
+    /**
+     * the menu items
+     */
     public String fooditems;
 
+    /**
+     * the location information
+     */
     public Location location;
 }

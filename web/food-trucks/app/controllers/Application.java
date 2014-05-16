@@ -3,10 +3,11 @@ package controllers;
 import models.Bounds;
 import models.FoodTruck;
 
-import play.*;
+import play.Logger;
 import play.libs.Akka;
-import play.mvc.*;
 import play.libs.WS;
+import play.mvc.BodyParser;
+import play.mvc.Controller;
 import play.mvc.Result;
 
 import static play.libs.F.Function;
@@ -88,8 +89,8 @@ public class Application extends Controller {
     @BodyParser.Of(BodyParser.Json.class)
     public static Result bounds() {
         if(FoodTruck.foodTrucks().count() == 0){
-            Logger.warn("Application-bounds: no data to serve");
-            //redirect(liveBounds());
+            Logger.warn("Application-bounds: no data to serve, falling back to live query.");
+            //redirect(liveBounds());//TODO: redirect to the live query
         }
         JsonNode json = request().body().asJson();
         JsonNode boundsNode = json.get("bounds");
