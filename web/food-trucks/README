@@ -1,4 +1,6 @@
-This is your new Play application
-=====================================
-
-This file will be packaged with your application, when using `play dist`.
+Main files:
+- app/Global.java : handles startup activities, refreshing the cached data from the San Francisco government data service.
+- app/controllers/Application.java : the main application controller, handles incoming API requests.
+- app/views/index.scala.html: the main view for the application.
+- public/javascripts/service.js: the angularjs client application that manages communication with the server and loading information into the view.
+- public/infowindow.scala.html: layout for truck information window.
