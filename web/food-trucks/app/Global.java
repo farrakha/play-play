@@ -66,7 +66,7 @@ public class Global extends GlobalSettings{
                 FoodTruck.foodTrucks().insert(truck);
             }
             FoodTruck.foodTrucks().ensureIndex("{location: '2d'}");
-            System.out.println("new data size: " + FoodTruck.foodTrucks().count());
+            Logger.info(String.format("new data size: %d", FoodTruck.foodTrucks().count()));
         }else{
             Logger.warn("Global-updateDataBase: Received no data from service");
         }

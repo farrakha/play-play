@@ -115,8 +115,8 @@ public class Application extends Controller {
      * @return the formatted query condition
      */
     private static String formatBoundsWebQuery(Bounds bounds){
-        String query = String.format("within_box(location,%f,%f,%f,%f)", bounds.topLeftLatitude
-                , bounds.topLeftLongitude,  bounds.bottomRightLatitude, bounds.bottomRightLongitude);
+        String query = String.format("within_box(location,%f,%f,%f,%f)", bounds.getTopLeftLatitude()
+                , bounds.getTopLeftLongitude(),  bounds.getBottomRightLatitude(), bounds.getBottomRightLongitude());
         return query;
     }
 
@@ -132,6 +132,10 @@ public class Application extends Controller {
         return query;
     }
 
+    /**
+     * Wraps a bad request result in a promise
+     * @return the Promise<Result> containing a bad request Result.
+     */
     private static Promise<Result> badRequestPromise(){
         Promise<Result> promiseOfResult = Akka.future(
             new Callable<Result>() {
