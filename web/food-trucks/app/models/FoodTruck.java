@@ -18,6 +18,11 @@ public class FoodTruck {
     private String _id;
 
     /**
+     * the server id for the truck
+     */
+    public String objectid;
+
+    /**
      * the name of the food truck
      */
     public String applicant;
@@ -36,4 +41,5 @@ public class FoodTruck {
      * the address
      */
     public String locationdescription;
+
 }

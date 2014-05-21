@@ -27,7 +27,7 @@ public class Application extends Controller {
     private static final ObjectMapper _mapper = new ObjectMapper();
 
     public static final String SF_FOOD_TRUCKS_API = "http://data.sfgov.org/resource/rqzj-sfat.json?";
-    public static final String DEFAULT_PROJECTION = "applicant, fooditems, location, locationdescription";
+    public static final String DEFAULT_PROJECTION = "applicant, fooditems, location, locationdescription, objectid";
 
     /*
      * Loads the index page

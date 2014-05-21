@@ -76,7 +76,7 @@ angular.module('truckApp', [])
 
     // Add a marker to the map for the truck
     var addMarkerForTruck = function(truck) {
-        if (truck.applicant != null && truck.location != null) {
+        if (truck.applicant != null && truck.location != null && !$scope.markers[truck.objectid]) {
             var latlng = new google.maps.LatLng(truck.location.latitude, truck.location.longitude);
             var marker = new google.maps.Marker({
                 position: latlng,
@@ -102,7 +102,7 @@ angular.module('truckApp', [])
                     };
                  })(marker, $scope, compiled)
             );
-            $scope.markers.push(marker);
+            $scope.markers[truck.objectid] = true;
         }
     }
 
