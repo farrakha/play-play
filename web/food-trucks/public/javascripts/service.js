@@ -64,14 +64,29 @@ angular.module('truckApp', [])
                 'Content-Type': 'application/json'
             }
         }).success(function(data, status, headers, config) {
-            var trucks = data;
-            angular.forEach(trucks, function(truck) {
-                addMarkerForTruck(truck);
-            });
+            var requestBounds = data.bounds;
+            var mapBounds = $scope.map.getBounds();
+            // if the map has moved from these bounds, ignore this response
+            if(equalBounds(requestBounds, mapBounds)){
+                var trucks = angular.fromJson(data.trucks);
+                angular.forEach(trucks, function(truck) {
+                    addMarkerForTruck(truck);
+                });
+            }
         }).error(function(data, status, headers, config) {
             console.log(data);
         });
 
+    }
+
+    /*
+     * compare our request bounds object to google map bounds object
+     */
+    function equalBounds(requestBounds, mapBounds){
+        return requestBounds.topLeftLatitude ==  mapBounds.getNorthEast().lat() &&
+               requestBounds.topLeftLongitude == mapBounds.getSouthWest().lng() &&
+               requestBounds.bottomRightLatitude ==  mapBounds.getSouthWest().lat() &&
+               requestBounds.bottomRightLongitude ==  mapBounds.getNorthEast().lng()
     }
 
     // Add a marker to the map for the truck

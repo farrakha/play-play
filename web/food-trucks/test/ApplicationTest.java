@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import controllers.routes;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -73,9 +74,17 @@ public class ApplicationTest {
         request.put("bounds", Json.toJson(bounds));
         Result result = callAction(routes.ref.Application.bounds(), new FakeRequest().withJsonBody(request));
         assertThat(status(result)).isEqualTo(OK);
-        String resultNode = contentAsString(result);
-        System.out.println(resultNode);
-        assertThat(resultNode.length()).isGreaterThan(0);
+        String resultString = contentAsString(result);
+        System.out.println(resultString);
+        JsonNode resultNode = Json.parse(resultString);
+        String trucksString= resultNode.get("trucks").asText();
+        try {
+            List<FoodTruck> trucks = _mapper.readValue(trucksString, new TypeReference<List<FoodTruck>>(){});
+            assertThat(trucksString.length()).isGreaterThan(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 
 }

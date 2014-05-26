@@ -1,10 +1,12 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Bounds;
 import models.FoodTruck;
 
 import play.Logger;
 import play.libs.Akka;
+import play.libs.Json;
 import play.libs.WS;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
@@ -99,7 +101,10 @@ public class Application extends Controller {
                 Bounds bounds = _mapper.readValue(boundsNode.toString(), Bounds.class);
                 Logger.info("Application-bounds: received bounds request: " + bounds.toString());
                 Iterable<FoodTruck> result = FoodTruck.foodTrucks().find(formatBoundsDBQuery(bounds)).as(FoodTruck.class);
-                return ok(_mapper.writeValueAsString(result));
+                ObjectNode response = Json.newObject();
+                response.put("trucks", _mapper.writeValueAsString(result));
+                response.put("bounds", Json.toJson(bounds));
+                return ok(response);
             } catch (IOException e) {
                 e.printStackTrace();
                 return internalServerError();
